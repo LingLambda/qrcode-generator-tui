@@ -1,6 +1,7 @@
 use crate::app::SaveOption;
 use crate::generator::generator_qrcode;
 use clap::{CommandFactory, Parser};
+use std::fs;
 
 #[derive(Parser, Debug)]
 pub struct Args {
@@ -24,8 +25,9 @@ pub fn command() {
     if let Some(text) = args.text {
         generator_qrcode(text, SaveOption::SaveAndOpen);
         std::process::exit(0);
-    } else if args.ui {
-    } else {
-        panic!("未知错误");
+    } else if let Some(path) = args.path {
+        let text = fs::read_to_string(path).expect("读取文件错误");
+        generator_qrcode(text, SaveOption::SaveAndOpen);
+        std::process::exit(0);
     }
 }
