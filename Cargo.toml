@@ -1,0 +1,14 @@
+[package]
+name = "qrcode-generator-tui"
+version = "0.1.0"
+authors = ["LingLambda <abc1514671906@163.com>"]
+license = "MIT"
+edition = "2021"
+
+[dependencies]
+crossterm = "0.28.1"
+ratatui = "0.29.0"
+tui-textarea = "0.7.0"
+qrcode = "0.14.1"
+image = "0.25.5"
+clap = { version = "4.5.31", features = ["derive"] }
