@@ -22,7 +22,7 @@ pub fn command() {
     }
 
     if let Some(text) = args.text {
-        generator_qrcode(text,SaveOption::SaveAndOpen);
+        generator_qrcode(text, SaveOption::SaveAndOpen);
         std::process::exit(0);
     } else if args.ui {
     } else {

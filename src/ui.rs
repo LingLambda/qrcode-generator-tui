@@ -6,12 +6,12 @@ use ratatui::Frame;
 
 pub fn ui(frame: &mut Frame, app: &mut App) {
     match app.current_screen {
-        CurrentScreen::Main=>main_ui(frame,app),
-        CurrentScreen::Exiting=>exit_ui(frame),
+        CurrentScreen::Main => main_ui(frame, app),
+        CurrentScreen::Exiting => exit_ui(frame),
     }
 }
 
-fn main_ui(frame:&mut Frame,app: &mut App){
+fn main_ui(frame: &mut Frame, app: &mut App) {
     let chunks = Layout::default()
         .direction(Direction::Vertical)
         .constraints([Constraint::Min(1), Constraint::Length(1)])
@@ -27,7 +27,7 @@ fn main_ui(frame:&mut Frame,app: &mut App){
     frame.render_widget(para, chunks[1]);
 }
 
-fn exit_ui(frame:&mut Frame){
+fn exit_ui(frame: &mut Frame) {
     frame.render_widget(Clear, frame.area()); //清屏
     let popup_block = Block::default()
         .borders(Borders::NONE)
@@ -45,8 +45,6 @@ fn exit_ui(frame:&mut Frame){
     let area = chunk_exit_rect(frame.area());
     frame.render_widget(exit_paragraph, area);
 }
-
-
 
 fn chunk_exit_rect(rect: Rect) -> Rect {
     let rects = Layout::default()
