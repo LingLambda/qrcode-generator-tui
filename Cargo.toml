@@ -11,4 +11,4 @@ ratatui = "0.29.0"
 tui-textarea = "0.7.0"
 qrcode = "0.14.1"
 image = "0.25.5"
-clap = { version = "4.5.31", features = ["derive"] }
+clap = { version = "4.5.37", features = ["derive"] }
