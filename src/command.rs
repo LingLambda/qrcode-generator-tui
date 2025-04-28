@@ -1,7 +1,9 @@
 use crate::app::SaveOption;
 use crate::generator::generator_qrcode;
+use chardetng::EncodingDetector;
 use clap::{CommandFactory, Parser};
-use std::fs;
+use encoding_rs::Encoding;
+use std::{borrow::Cow, fs};
 
 #[derive(Parser, Debug)]
 pub struct Args {
@@ -26,8 +28,30 @@ pub fn command() {
         generator_qrcode(text, SaveOption::SaveAndOpen);
         std::process::exit(0);
     } else if let Some(path) = args.path {
-        let text = fs::read_to_string(path).expect("读取文件错误");
-        generator_qrcode(text, SaveOption::SaveAndOpen);
+        let vec = fs::read(path).expect("读取文件错误");
+        let name = guess_encoding(&vec);
+        println!("检测到文件编码格式:{}", name);
+        let cow: Cow<str>;
+        let had_errors;
+        if let Some(encoding) = Encoding::for_label(name.as_bytes()) {
+            (cow, _, had_errors) = encoding.decode(&vec)
+        } else {
+            panic!("不支持的文件编码格式");
+        }
+        if had_errors {
+            panic!("文件编码错误");
+        }
+        generator_qrcode(cow.to_string(), SaveOption::SaveAndOpen);
         std::process::exit(0);
     }
+}
+
+fn guess_encoding(vec: &[u8]) -> String {
+    let mut detector = EncodingDetector::new();
+    detector.feed(vec, false);
+    let (encoding, guess) = detector.guess_assess(None, true);
+    if !guess {
+        panic!("无法推断文件编码格式");
+    }
+    encoding.name().to_string()
 }
