@@ -1,0 +1,86 @@
+name: Build and Release
+permissions: # 设置工作流可写 用于发布 release
+  contents: write
+
+on:
+  push:
+    tags:
+      - "v*.*.*" # 仅对符合 v*.*.* 的 tag 触发
+  workflow_dispatch: # 手动触发
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        arch: [x86_64, aarch64]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+
+      # 没整明白，TODO就对了
+      # - name: Cache Rust dependencies
+      #   uses: Swatinem/rust-cache@v2
+      #   with:
+      #     key: v0-rust-build-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }} 
+      #     restore-keys: |
+      #       v0-rust-build-${{ runner.os }}-
+
+      - name: Build project
+        run: cargo build --release
+
+      - name: Rename binaries per platform windows
+        if: matrix.os == 'windows-latest'
+        run: |
+          OUTPUT_NAME="qrcode-generator-tui-${{ matrix.os }}-${{ matrix.arch }}"
+          cp target/release/qrcode-generator-tui.exe "target/release/${OUTPUT_NAME}.exe"
+        shell: bash
+
+      - name: Rename binaries per platform not windows
+        if: matrix.os != 'windows-latest'
+        run: |
+          OUTPUT_NAME="qrcode-generator-tui-${{ matrix.os }}-${{ matrix.arch }}"
+          cp target/release/qrcode-generator-tui "target/release/${OUTPUT_NAME}"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          # 动态生成 artifact 名称
+          name: ${{ matrix.os }}-${{ matrix.arch }}-qrcode-generator-tui
+          # Windows 下带 .exe 后缀，其它平台无后缀
+          path: target/release/qrcode-generator-tui-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts # 一次性下载所有构建产物
+
+      - name: Create GitHub Release and Upload Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          # body: |
+          #   Changes in this Release
+          #   - First Change
+          #   - Second Change
+          draft: false
+          prerelease: false
+          # 使用 glob 一次性匹配所有平台与架构的可执行文件
+          files: |
+            artifacts/**
