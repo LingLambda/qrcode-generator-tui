@@ -39,7 +39,7 @@ jobs:
       - name: Rename binaries per platform windows
         if: matrix.os == 'windows-latest'
         run: |
-          OUTPUT_NAME="qrcode-generator-tui-${{ matrix.os }}-${{ matrix.arch }}"
+          set OUTPUT_NAME="qrcode-generator-tui-${{ matrix.os }}-${{ matrix.arch }}"
           cp target/release/qrcode-generator-tui.exe "target/release/${OUTPUT_NAME}.exe"
 
       - name: Rename binaries per platform not windows
