@@ -8,7 +8,7 @@ use crate::command::command;
 use crate::generator::generator_qrcode;
 use crate::ui::ui;
 use crossterm::terminal::{
-  disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen,
+    disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen,
 };
 use ratatui::backend::CrosstermBackend;
 use ratatui::style::{Color, Style};
