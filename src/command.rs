@@ -1,7 +1,7 @@
 use crate::app::SaveOption;
 use crate::generator::generator_qrcode;
 use chardetng::EncodingDetector;
-use clap::{CommandFactory, Parser};
+use clap::{ CommandFactory, Parser};
 use encoding_rs::Encoding;
 use std::{borrow::Cow, fs};
 
@@ -12,7 +12,7 @@ pub struct Args {
     #[arg(short, long, exclusive = true, help = "启动ui编辑器")]
     ui: bool,
     #[arg(short, long, exclusive = true, help = "读取指定路径文本文件")]
-    path: Option<std::path::PathBuf>,
+    path: Option<std::path::PathBuf>
 }
 
 pub fn command() {

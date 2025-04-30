@@ -2,6 +2,7 @@ mod app;
 mod command;
 mod generator;
 mod ui;
+mod i18n;
 
 use crate::app::{App, CurrentScreen, SaveOption};
 use crate::command::command;

@@ -6,11 +6,20 @@ license = "MIT"
 edition = "2021"
 
 [dependencies]
+# tui
 crossterm = "0.28.1"
 ratatui = "0.29.0"
 tui-textarea = "0.7.0"
-qrcode = "0.14.1"
-image = "0.25.5"
+#command
 clap = { version = "4.5.31", features = ["derive"] }
+# encoding
 encoding_rs = "0.8.35"
 chardetng = "0.1.17"
+# i18n
+fluent-bundle = "0.15.3"
+fluent-resmgr = "0.0.7"
+unic-langid = "0.9.5"
+# other
+qrcode = "0.14.1"
+image = "0.25.5"
+once_cell = "1.21.3"
