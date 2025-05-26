@@ -17,7 +17,7 @@ encoding_rs = "0.8.35"
 chardetng = "0.1.17"
 # i18n
 fluent-bundle = "0.15.3"
-fluent-resmgr = "0.0.7"
+fluent-resmgr = "0.0.8"
 unic-langid = "0.9.5"
 # other
 qrcode = "0.14.1"
