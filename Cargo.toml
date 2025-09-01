@@ -11,7 +11,7 @@ crossterm = "0.28.1"
 ratatui = "0.29.0"
 tui-textarea = "0.7.0"
 #command
-clap = { version = "4.5.43", features = ["derive"] }
+clap = { version = "4.5.46", features = ["derive"] }
 # encoding
 encoding_rs = "0.8.35"
 chardetng = "0.1.17"
