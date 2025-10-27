@@ -50,7 +50,7 @@ jobs:
           cp target/release/qrcode-generator-tui "target/release/${OUTPUT_NAME}"
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           # 动态生成 artifact 名称
           name: ${{ matrix.os }}-${{ matrix.arch }}-qrcode-generator-tui
